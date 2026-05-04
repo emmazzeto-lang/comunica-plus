@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'tela_info.dart';
+import 'selecao_perfil_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -33,7 +34,14 @@ class HomeScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildMenuButton(icon: Icons.volume_up, text: 'Começar', onPressed: () {}),
+                          _buildMenuButton(icon: Icons.volume_up, text: 'Começar', onPressed: () {
+                            Navigator.push(
+                              context,
+                              // AGORA VAI PARA A TELA DE SELEÇÃO:
+                              MaterialPageRoute(builder: (context) => const SelecaoPerfilScreen()),
+                            );
+                          }
+                          ),
                           const SizedBox(height: 20),
                           _buildMenuButton(icon: Icons.edit, text: 'Criar', onPressed: () {}),
                           const SizedBox(height: 20),
