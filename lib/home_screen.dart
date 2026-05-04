@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'tela_info.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -80,8 +81,10 @@ class HomeScreen extends StatelessWidget {
                           shape: const CircleBorder(), //
 
                           onPressed: () {
-                            // Ação ao clicar (ex: abrir a tela de informações), eu (Emerson) deixei preparada a estrutura para configurarmos a ação depois
-                            // Navigator.push(...);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const TelaInfo()),
+                            );
                           },
                           child: const Icon(Icons.priority_high), // Ícone de ! (pode mudar se quiser)
                         ),
