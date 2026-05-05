@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'tela_info.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'selecao_perfil_screen.dart';
+import 'tela_info.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    //Pega o tamanho total da tela do aparelho
-    final tamanhoTela = MediaQuery.of(context).size;
-
     return Scaffold(
       body: Stack(
         children: [
-          //Fundo da tela
+          // CAMADA 1: O FUNDO DA TELA INICIAL
           Positioned.fill(
             child: Image.asset(
               'assets/images/background.png',
@@ -21,113 +19,121 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
 
-          //Conteúdo Principal
+          // CAMADA 2: O MASCOTE DINOSSAURO (Movido um pouco para a esquerda)
+          Positioned(
+            right: 50,
+            bottom: -10,
+            child: Image.asset(
+              'assets/images/dinossauro.png',
+              height: 400,
+              fit: BoxFit.contain,
+            ),
+          ),
+
+          // CAMADA 3: CONTEÚDO E BOTÕES EM GRADE (2x2)
           SafeArea(
-            child: Row(
-              children: [
-                //Coluna da Esquerda: Botões (Com proteção extra contra overflow)
-                Expanded(
-                  flex: 1,
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.only(left: 32.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      // PRIMEIRA LINHA: Começar e Criar
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          _buildMenuButton(icon: Icons.volume_up, text: 'Começar', onPressed: () {
-                            Navigator.push(
-                              context,
-                              // AGORA VAI PARA A TELA DE SELEÇÃO:
-                              MaterialPageRoute(builder: (context) => const SelecaoPerfilScreen()),
-                            );
-                          }
+                          _buildMenuButtonImagem(
+                              caminhoImagem: 'assets/images/botao_comecar.png',
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const SelecaoPerfilScreen()),
+                                );
+                              }
                           ),
-                          const SizedBox(height: 20),
-                          _buildMenuButton(icon: Icons.edit, text: 'Criar', onPressed: () {}),
-                          const SizedBox(height: 20),
-                          _buildMenuButton(icon: Icons.menu_book, text: 'Tutorial', onPressed: () {}),
-                          const SizedBox(height: 20),
-                          _buildMenuButton(icon: Icons.star_border, text: 'Favoritos', onPressed: () {}),
+
+                          const SizedBox(width: 16),
+
+                          _buildMenuButtonImagem(
+                              caminhoImagem: 'assets/images/botao_criar.png',
+                              onPressed: () {}
+                          ),
                         ],
                       ),
-                    ),
-                  ),
 
+                      const SizedBox(height: 16),
 
-                // Coluna da Direita: Dinossauro (Deixei ele primeiro porque tive dificuldade nas proporções kk)
-                Expanded(
-                  flex: 1,
-                  child: Stack(
-                    children: [
-                      // Dinossauro colado no chão com Positioned
-                      Positioned(
-                        bottom: 0,
-                        // Centralizei ele um pouco na metade direita da tela
-                        right: 40,
-                        child: Image.asset(
-                          'assets/images/dinossauro.png',
-                          height: tamanhoTela.height * 0.90,
-                          // Garante que o Flutter puxe os pixels do desenho para baixo
-                          alignment: Alignment.bottomCenter,
-                        ),
+                      // SEGUNDA LINHA: Tutorial e Favoritos
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _buildMenuButtonImagem(
+                              caminhoImagem: 'assets/images/botao_tutorial.png',
+                              onPressed: () {}
+                          ),
+
+                          const SizedBox(width: 16),
+
+                          _buildMenuButtonImagem(
+                              caminhoImagem: 'assets/images/botao_favoritos.png',
+                              onPressed: () {}
+                          ),
+                        ],
                       ),
 
-                      // Botão de Exclamação (!)
-                      Positioned(
-                        bottom: 16,
-                        right: 16,
-                        child: FloatingActionButton(
-                          mini: true, // Mantém o tamanho mini, ou remova para tamanho padrão
-
-                          // 1. Aqui escolhi a cor do fundo
-                          backgroundColor: const Color(0xFFF48FB1),
-
-                          // 2. Aqui escolhi a cor do ícone
-                          foregroundColor: Colors.white, // Ícone branco para contraste
-
-                          // 3. Aqui alterei o formato do botão
-                          shape: const CircleBorder(), //
-
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const TelaInfo()),
-                            );
-                          },
-                          child: const Icon(Icons.priority_high), // Ícone de ! (pode mudar se quiser)
-                        ),
-                      ),
                     ],
                   ),
                 ),
-              ],
+              ),
             ),
           ),
+
+          // CAMADA 4: O NOVO BOTÃO DE INFORMAÇÕES NO CANTO INFERIOR DIREITO
+          Positioned(
+            bottom: 0, // Distância do fundo da tela
+            right: 0,  // Distância da borda direita
+            child: InkWell(
+              onTap: () {
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const TelaInfo()),
+                );
+
+              },
+              borderRadius: BorderRadius.circular(30), // Efeito de clique arredondado
+              child: Image.asset(
+                'assets/images/botao_info.png',
+                width: 75, // Tamanho menorzinho por ser um botão de canto (pode ajustar)
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+
         ],
       ),
     );
   }
 
-  Widget _buildMenuButton({required IconData icon, required String text, required VoidCallback onPressed}) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFFF4C8A1),
-        foregroundColor: Colors.black87,
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: const BorderSide(color: Colors.black54, width: 2),
-        ),
-        elevation: 4,
-      ),
-      onPressed: onPressed,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 32),
-          const SizedBox(width: 12),
-          Text(text, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w600)),
-        ],
+
+  // MOLDE DOS BOTÕES PRINCIPAIS
+
+  Widget _buildMenuButtonImagem({
+    required String caminhoImagem,
+    required VoidCallback onPressed
+  }) {
+    return InkWell(
+      onTap: onPressed,
+      borderRadius: BorderRadius.circular(30),
+      child: Image.asset(
+        caminhoImagem,
+        width: 200,
+        fit: BoxFit.contain,
       ),
     );
   }

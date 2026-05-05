@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'comecar_screen.dart';
+import 'custom_appbar.dart';
 
 class SelecaoPerfilScreen extends StatelessWidget {
   const SelecaoPerfilScreen({super.key});
@@ -8,47 +9,11 @@ class SelecaoPerfilScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-
-        // SETA COM EFEITO 3D (Círculo branco com elevação)
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 8.0),
-          child: Material(
-            color: Colors.white,
-            shape: const CircleBorder(),
-            elevation: 4,
-            child: InkWell(
-              customBorder: const CircleBorder(),
-              onTap: () => Navigator.pop(context),
-              child: const Icon(
-                Icons.arrow_back_rounded,
-                color: Color(0xFFF4C8A1),
-                size: 28,
-              ),
-            ),
-          ),
-        ),
-
-        title: Text(
-          'Quem vai falar?',
-          style: GoogleFonts.nunito(
-            textStyle: const TextStyle(
-              color: Colors.black87,
-              fontWeight: FontWeight.w900,
-              fontSize: 32,
-              shadows: [
-                Shadow(color: Colors.white, blurRadius: 16),
-                Shadow(color: Colors.white, blurRadius: 24),
-              ],
-            ),
-          ),
-        ),
+      appBar: const CustomAppBar(
+        titulo: 'Quem vai falar?',
+        corFundo: Color(0xFFE0F2F1),
+        corTexto: Color(0xFF00695C),
       ),
-
       body: Stack(
         children: [
           Positioned.fill(
