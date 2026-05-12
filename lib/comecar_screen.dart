@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
+import 'services/tts_services.dart';
 
 class ComecarScreen extends StatefulWidget {
-  // Criei a variável que vai guardar se é menino ou menina
+
   final String genero;
 
-  // 2. Obriguei a tela a receber essa informação quando for aberta
-  const ComecarScreen({super.key, required this.genero});
+  const ComecarScreen({
+    super.key,
+    required this.genero,
+  });
 
   @override
   State<ComecarScreen> createState() => _ComecarScreenState();
 }
 
 class _ComecarScreenState extends State<ComecarScreen> {
+  //Serviço de Text To Speech (TTS)
+  final TtsService tts = TtsService();
   // Essa lista guarda as palavras que a criança clica
   List<String> fraseAtual = [];
 
   //  Nossa base de dados temporária (depois trocaremos por imagens e pastas)
   final List<String> cardsExemplo = [
     'Eu quero', 'Comer', 'Beber', 'Brincar',
-    'Banheiro', 'Dormir', 'Sim', 'Não'
+    'Banheiro', 'Dormir', 'Sim', 'Não', 'Teste do Text To Speech', 'Eu tenho',
+    'Fome', 'Sede', 'Estou com', 'Sono', 'Fome'
   ];
 
   @override
@@ -49,8 +55,15 @@ class _ComecarScreenState extends State<ComecarScreen> {
           // Botão de Falar (Text-to-Speech que faremos no futuro)
           IconButton(
             icon: const Icon(Icons.record_voice_over, color: Colors.green, size: 36),
-            onPressed: () {
-              // Aqui vai entrar o pacote de voz em breve!
+            onPressed: () async {
+
+              String frase =
+              fraseAtual.join(" ");
+
+              if (frase.isNotEmpty) {
+
+                await tts.falar(frase);
+              }
             },
           ),
           const SizedBox(width: 16),

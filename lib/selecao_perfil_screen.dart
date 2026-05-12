@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'comecar_screen.dart';
 import 'custom_appbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SelecaoPerfilScreen extends StatelessWidget {
   const SelecaoPerfilScreen({super.key});
@@ -67,10 +68,25 @@ class SelecaoPerfilScreen extends StatelessWidget {
     required String genero
   }) {
     return InkWell(
-      onTap: () {
+      onTap: () async {
+
+        SharedPreferences prefs =
+        await SharedPreferences.getInstance();
+
+        await prefs.setString(
+          'voz',
+          genero,
+        );
+
         Navigator.pushReplacement(
+
           context,
-          MaterialPageRoute(builder: (context) => ComecarScreen(genero: genero)),
+
+          MaterialPageRoute(
+
+            builder: (context) =>
+                ComecarScreen(genero: genero),
+          ),
         );
       },
       child: SizedBox(

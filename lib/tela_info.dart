@@ -147,7 +147,7 @@ class TelaInfo extends StatelessWidget {
 
                   const SizedBox(height: 20),
 
-                  // --- CARD equie ---
+                  // --- CARD equipe ---
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(

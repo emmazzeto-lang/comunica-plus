@@ -2,9 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'selecao_perfil_screen.dart';
 import 'tela_info.dart';
+import 'configuracoes_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'comecar_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+  Future<void> abrirComecar(
+      BuildContext context) async {
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? voz = prefs.getString('voz');
+
+    if (voz == null) {
+
+      Navigator.push(
+
+        context,
+
+        MaterialPageRoute(
+
+          builder: (context) => const SelecaoPerfilScreen(),
+        ),
+      );
+
+    } else {
+
+      Navigator.push(
+
+        context,
+
+        MaterialPageRoute(
+
+          builder: (context) =>
+              ComecarScreen(genero: voz),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +86,7 @@ class HomeScreen extends StatelessWidget {
                           _buildMenuButtonImagem(
                               caminhoImagem: 'assets/images/botao_comecar.png',
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const SelecaoPerfilScreen()),
-                                );
+                                abrirComecar(context);
                               }
                           ),
 
@@ -95,23 +128,75 @@ class HomeScreen extends StatelessWidget {
 
           // CAMADA 4: O NOVO BOTÃO DE INFORMAÇÕES NO CANTO INFERIOR DIREITO
           Positioned(
-            bottom: 0, // Distância do fundo da tela
-            right: 0,  // Distância da borda direita
-            child: InkWell(
-              onTap: () {
+            bottom: 0,
+            right: 0,
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const TelaInfo()),
-                );
+            child: Row(
 
-              },
-              borderRadius: BorderRadius.circular(30), // Efeito de clique arredondado
-              child: Image.asset(
-                'assets/images/botao_info.png',
-                width: 75, // Tamanho menorzinho por ser um botão de canto (pode ajustar)
-                fit: BoxFit.contain,
-              ),
+              children: [
+
+                // BOTÃO CONFIGURAÇÕES
+                InkWell(
+
+                  onTap: () {
+
+                    Navigator.push(
+
+                      context,
+
+                      MaterialPageRoute(
+
+                        builder: (context) =>
+                        const ConfiguracoesScreen(),
+                      ),
+                    );
+                  },
+
+                  borderRadius:
+                  BorderRadius.circular(30),
+
+                  child: Image.asset(
+
+                    'assets/images/botao_config.png',
+
+                    width: 75,
+
+                    fit: BoxFit.contain,
+                  ),
+                ),
+
+                const SizedBox(width: 10),
+
+                // BOTÃO INFO
+                InkWell(
+
+                  onTap: () {
+
+                    Navigator.push(
+
+                      context,
+
+                      MaterialPageRoute(
+
+                        builder: (context) =>
+                        const TelaInfo(),
+                      ),
+                    );
+                  },
+
+                  borderRadius:
+                  BorderRadius.circular(30),
+
+                  child: Image.asset(
+
+                    'assets/images/botao_info.png',
+
+                    width: 75,
+
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ],
             ),
           ),
 
