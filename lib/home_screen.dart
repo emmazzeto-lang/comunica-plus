@@ -8,35 +8,27 @@ import 'comecar_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-  Future<void> abrirComecar(
-      BuildContext context) async {
 
+  Future<void> abrirComecar(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Linha de segurança para proteger o app após o 'await'
+    if (!context.mounted) return;
 
     String? voz = prefs.getString('voz');
 
     if (voz == null) {
-
       Navigator.push(
-
         context,
-
         MaterialPageRoute(
-
           builder: (context) => const SelecaoPerfilScreen(),
         ),
       );
-
     } else {
-
       Navigator.push(
-
         context,
-
         MaterialPageRoute(
-
-          builder: (context) =>
-              ComecarScreen(genero: voz),
+          builder: (context) => ComecarScreen(genero: voz),
         ),
       );
     }
@@ -55,7 +47,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
 
-          // CAMADA 2: O MASCOTE DINOSSAURO (Movido um pouco para a esquerda)
+          // CAMADA 2: O MASCOTE DINOSSAURO
           Positioned(
             right: 50,
             bottom: -10,
@@ -126,77 +118,48 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
 
-          // CAMADA 4: O NOVO BOTÃO DE INFORMAÇÕES NO CANTO INFERIOR DIREITO
+          // CAMADA 4: BOTÃO DE CONFIGURAÇÕES (CANTO SUPERIOR DIREITO)
           Positioned(
-            bottom: 0,
-            right: 0,
-
-            child: Row(
-
-              children: [
-
-                // BOTÃO CONFIGURAÇÕES
-                InkWell(
-
-                  onTap: () {
-
-                    Navigator.push(
-
-                      context,
-
-                      MaterialPageRoute(
-
-                        builder: (context) =>
-                        const ConfiguracoesScreen(),
-                      ),
-                    );
-                  },
-
-                  borderRadius:
-                  BorderRadius.circular(30),
-
-                  child: Image.asset(
-
-                    'assets/images/botao_config.png',
-
-                    width: 75,
-
-                    fit: BoxFit.contain,
+            // top: 40 garante que o botão não fique escondido atrás do ícone de bateria do celular
+            top: 40,
+            right: 5,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ConfiguracoesScreen(),
                   ),
-                ),
+                );
+              },
+              borderRadius: BorderRadius.circular(30),
+              child: Image.asset(
+                'assets/images/botao_config.png',
+                width: 70,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
 
-                const SizedBox(width: 10),
-
-                // BOTÃO INFO
-                InkWell(
-
-                  onTap: () {
-
-                    Navigator.push(
-
-                      context,
-
-                      MaterialPageRoute(
-
-                        builder: (context) =>
-                        const TelaInfo(),
-                      ),
-                    );
-                  },
-
-                  borderRadius:
-                  BorderRadius.circular(30),
-
-                  child: Image.asset(
-
-                    'assets/images/botao_info.png',
-
-                    width: 75,
-
-                    fit: BoxFit.contain,
+          // CAMADA 5: BOTÃO DE INFORMAÇÕES (CANTO INFERIOR DIREITO)
+          Positioned(
+            bottom: 5,
+            right: 5,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TelaInfo(),
                   ),
-                ),
-              ],
+                );
+              },
+              borderRadius: BorderRadius.circular(30),
+              child: Image.asset(
+                'assets/images/botao_info.png',
+                width: 75,
+                fit: BoxFit.contain,
+              ),
             ),
           ),
 
@@ -205,9 +168,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-
   // MOLDE DOS BOTÕES PRINCIPAIS
-
   Widget _buildMenuButtonImagem({
     required String caminhoImagem,
     required VoidCallback onPressed

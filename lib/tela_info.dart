@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'custom_appbar.dart';
 
 class TelaInfo extends StatelessWidget {
@@ -6,225 +7,195 @@ class TelaInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-
-
-      appBar: const CustomAppBar(
-        titulo: "CRÉDITOS",
-        corFundo: Color(0xFFE0F2F1),
-        corTexto: Color(0xFF00695C),
+    // =================================================================
+    // MUDANÇA 1: O Container com o fundo agora abraça o Scaffold inteiro.
+    // Isso garante que o Scroll nunca mais vai travar!
+    // =================================================================
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/fundo-especial.jpeg'),
+          fit: BoxFit.cover,
+        ),
       ),
+      child: Scaffold(
+        // Deixamos o Scaffold invisível para a imagem da parede aparecer
+        backgroundColor: Colors.transparent,
 
-      //corpo da pagina
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return Stack(
-            children: [
+        appBar: const CustomAppBar(
+          titulo: "CRÉDITOS",
+          corFundo: Color(0xFFE0F2F1),
+          corTexto: Color(0xFF00695C),
+        ),
 
-              Positioned.fill(
-                child: Image.asset(
-                  'assets/images/fundo-especial.jpeg',
-                  fit: BoxFit.cover,
-                ),
-              ),
+        body: SafeArea(
+          // Agora a lista rolável é a dona absoluta do espaço!
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 10),
 
-              //conteudo principal
-              SafeArea(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 10),
-
-
-                      // --- CARD disciplina ---
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black,
-                              blurRadius: 10,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          children: [
-
-                            //  imagem
-                            Image.asset(
-                              'assets/images/info.png',
-                              width: 32,
-                              height: 32,
-                            ),
-
-                            // linha decorativa
-                            Container(
-                              height: 45,
-                              width: 1,
-                              margin: const EdgeInsets.symmetric(horizontal: 15),
-                              color: Colors.grey,
-                            ),
-
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-
-                                  // txts
-                                  Text.rich(
-                                    TextSpan(
-                                      children: [
-
-                                        TextSpan(text:'Disciplina: ',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16,
-                                                color: Color(0xFF277A5C))),
-
-                                        TextSpan(text:'Desenvolvimento de Software',
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.black)),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 6),
-                                  Text.rich(
-                                    TextSpan(
-                                      children: [
-
-                                        TextSpan(text:'Professor: ',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16,
-                                                color: Color(0xFF277A5C))),
-
-                                        TextSpan(text:'Dr. Elvio Gilberto da Silva',
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.black)),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      const SizedBox(height: 20),
-
-                      // --- CARD equie ---
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black,
-                              blurRadius: 10,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Row(
+                // =========================================================
+                // CARDS LADO A LADO
+                // =========================================================
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: _buildCardInfo(
+                        icone: 'assets/images/info.png',
+                        conteudo: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-
-                            // imagem
-                            Image.asset(
-                              'assets/images/grupo.png',
-                              width: 32,
-                              height: 32,
-                            ),
-
-                            // linha deco
-                            Container(
-                              height: 80,
-                              width: 1,
-                              margin: const EdgeInsets.symmetric(horizontal: 15),
-                              color: Colors.grey,
-                            ),
-
-
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                            Text.rich(
+                              TextSpan(
                                 children: [
-                                  //texto
-
-                                  Text("EQUIPE",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                          color: Color(0xFF5E33A3))
+                                  TextSpan(
+                                      text: 'Disciplina: \n',
+                                      style: GoogleFonts.nunito(fontWeight: FontWeight.w900, fontSize: 16, color: const Color(0xFF277A5C))
                                   ),
-
-                                  const SizedBox(height: 6),
-
-                                  Text("• Emerson Mazzeto", style: TextStyle(fontSize: 15, color: Color(0xFF5E33A3))),
-                                  Text("• Gabriel de Castro Pettenuci", style: TextStyle(fontSize: 15, color: Color(0xFF5E33A3))),
-                                  Text("• Giovanni Gabriel Angélico", style: TextStyle(fontSize: 15, color: Color(0xFF5E33A3))),
+                                  TextSpan(
+                                      text: 'Desenvolvimento de Software',
+                                      style: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black87)
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                      text: 'Professor: \n',
+                                      style: GoogleFonts.nunito(fontWeight: FontWeight.w900, fontSize: 16, color: const Color(0xFF277A5C))
+                                  ),
+                                  TextSpan(
+                                      text: 'Dr. Elvio Gilberto da Silva',
+                                      style: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black87)
+                                  ),
                                 ],
                               ),
                             ),
                           ],
                         ),
                       ),
+                    ),
 
-                      const SizedBox(height: 30),
+                    const SizedBox(width: 20),
 
-                      //Imagem
-                      const Center(
-                        child: Text(
-                          "DESENVOLVIMENTO DE SOFTWARE",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Color(0xFF277A5C),
-                          ),
-                        ),
-                      ),
-                      Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
+                    Expanded(
+                      child: _buildCardInfo(
+                        icone: 'assets/images/grupo.png',
+                        conteudo: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Image.asset(
-                              'assets/images/ciencia_da_computacao.jpg',
-                              width: 400,
-                              height: 150,
-                              fit: BoxFit.contain,
+                            Text(
+                              "EQUIPE",
+                              style: GoogleFonts.nunito(fontWeight: FontWeight.w900, fontSize: 16, color: const Color(0xFF5E33A3)),
                             ),
-
-                            SizedBox(height: 10),
-
-                            Image.asset(
-                              'assets/images/coordenadoria-de-extensao.jpg',
-                              width: 400,
-                              height: 150,
-                              fit: BoxFit.contain,
-                            ),
+                            const SizedBox(height: 6),
+                            Text("• Emerson Mazzeto", style: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 15, color: const Color(0xFF5E33A3))),
+                            Text("• Gabriel de Castro Pettenuci", style: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 15, color: const Color(0xFF5E33A3))),
+                            Text("• Giovanni Gabriel Angélico", style: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 15, color: const Color(0xFF5E33A3))),
                           ],
                         ),
                       ),
+                    ),
+                  ],
+                ),
 
-                      const SizedBox(height: 20),
-                    ],
+                const SizedBox(height: 40),
+
+                // =========================================================
+                // MUDANÇA 2: O TEXTO NA CAIXINHA (BADGE) TRANSLÚCIDA
+                // =========================================================
+                Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.85), // Fundo branquinho e suave
+                      borderRadius: BorderRadius.circular(30), // Bordas redondas
+                    ),
+                    child: Text(
+                      "DESENVOLVIMENTO DE SOFTWARE",
+                      style: GoogleFonts.nunito(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                        color: const Color(0xFF277A5C), // Fica perfeito sobre o branco!
+                        letterSpacing: 1.5,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          );
-        },
+
+                const SizedBox(height: 20),
+
+                // IMAGENS LADO A LADO
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/ciencia_da_computacao.jpg',
+                      width: 300,
+                      height: 100,
+                      fit: BoxFit.contain,
+                    ),
+
+                    const SizedBox(width: 40),
+
+                    Image.asset(
+                      'assets/images/coordenadoria-de-extensao.jpg',
+                      width: 300,
+                      height: 100,
+                      fit: BoxFit.contain,
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 50),
+              ],
+            ),
+          ),
+        ),
       ),
-    ); // Fecha o Scaffold
-  } // Fecha o build
-} // Fecha a classe
+    );
+  }
+
+  // =====================================================================
+  // MOLDE DO CARD BRANCO
+  // =====================================================================
+  Widget _buildCardInfo({required String icone, required Widget conteudo}) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.95),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 15,
+            offset: Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(icone, width: 40, height: 40),
+
+          Container(
+            height: 80,
+            width: 2,
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            color: Colors.grey.shade300,
+          ),
+
+          Expanded(child: conteudo),
+        ],
+      ),
+    );
+  }
+}
