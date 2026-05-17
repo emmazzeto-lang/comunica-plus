@@ -6,6 +6,8 @@ import 'configuracoes_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'comecar_screen.dart';
 import 'criar_screen.dart';
+import 'favoritos_screen.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -111,7 +113,12 @@ class HomeScreen extends StatelessWidget {
 
                           _buildMenuButtonImagem(
                               caminhoImagem: 'assets/images/botao_favoritos.png',
-                              onPressed: () {}
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const FavoritosScreen()),
+                                );
+                              }
                           ),
                         ],
                       ),

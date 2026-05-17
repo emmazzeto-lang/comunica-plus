@@ -40,6 +40,7 @@ dependencies:
   shared_preferences: ^2.5.3
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.14.4         #AQUIIIIIIIIIIII <>
   flutter_test:
     sdk: flutter
   flutter_native_splash: ^2.4.0
@@ -73,6 +74,15 @@ flutter_native_splash:
   android_12:
     image: assets/images/logo_comunica.png
     color: "#E0F2F1"
+
+flutter_launcher_icons:         #AQUIIIIIIIIIIII <>
+  android: true
+  ios: false
+  image_path: "assets/icons/app_icon.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/icons/app_icon.png"
+  adaptive_icon_foreground_inset: 18
+  min_sdk_android: 21
 
   # To add assets to your application, add an assets section, like this:
   # assets:

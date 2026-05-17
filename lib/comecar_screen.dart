@@ -20,6 +20,7 @@ class ComecarScreen extends StatefulWidget {
 class _ComecarScreenState extends State<ComecarScreen> {
   final TtsService tts = TtsService();
   List<Map<String, dynamic>> fraseAtual = [];
+  List<Map<String, dynamic>> _favoritosSalvos = [];
   String categoriaAtiva = "Pessoas";
 
   final List<String> categorias = ["Pessoas", "Comida", "Ações", "Sentimentos", "Objetos", "Alfabeto"];
@@ -35,6 +36,16 @@ class _ComecarScreenState extends State<ComecarScreen> {
     super.initState();
     // Carrega os cards customizados do SharedPreferences assim que a tela abre
     _carregarCartas();
+    _carregarFavoritos();
+  }
+  Future<void> _carregarFavoritos() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? favsJson = prefs.getString('frases_favoritas');
+    if (favsJson != null) {
+      setState(() {
+        _favoritosSalvos = List<Map<String, dynamic>>.from(jsonDecode(favsJson));
+      });
+    }
   }
 
   // =====================================================================
@@ -253,23 +264,34 @@ class _ComecarScreenState extends State<ComecarScreen> {
 
           const SizedBox(width: 12),
 
-          // BOTÃO APAGAR VERMELHO
-          if (fraseAtual.isNotEmpty)
+          // LÓGICA DO BOTÃO DA DIREITA (Estrela ou Apagar)
+          if (fraseAtual.isEmpty)
+          // Se estiver vazio, mostra a ESTRELA
             InkWell(
-              onTap: () {
-                setState(() {
-                  fraseAtual.removeLast();
-                });
-              },
-              child: Container(
+              onTap: _abrirModalFavoritos, // Função que vamos criar abaixo
+              child: Image.asset(
+                'assets/images/estrela.png',
                 width: 55,
                 height: 55,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFE57373),
-                  shape: BoxShape.circle,
-                  boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2))],
+              ),
+            )
+          else
+          // Se tiver algo, mostra o X de APAGAR
+            InkWell(
+              onTap: () => setState(() => fraseAtual.clear()), // Clique longo apaga tudo
+              onDoubleTap: () => setState(() => fraseAtual.clear()),
+              child: InkWell(
+                onTap: () => setState(() => fraseAtual.removeLast()),
+                child: Container(
+                  width: 55,
+                  height: 55,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFE57373),
+                    shape: BoxShape.circle,
+                    boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2))],
+                  ),
+                  child: const Icon(Icons.close, size: 34, color: Colors.white),
                 ),
-                child: const Icon(Icons.close, size: 34, color: Colors.white),
               ),
             ),
         ],
@@ -449,6 +471,73 @@ class _ComecarScreenState extends State<ComecarScreen> {
           ],
         ),
       ),
+    );
+  }
+  void _abrirModalFavoritos() {
+    // Atualiza a lista antes de abrir para garantir que pegou frases novas
+    _carregarFavoritos();
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          decoration: const BoxDecoration(
+            color: Color(0xFFF1F8E9),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+          ),
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 50,
+                height: 5,
+                decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(10)),
+              ),
+              const SizedBox(height: 15),
+              Text(
+                "MINHAS FRASES FAVORITAS",
+                style: GoogleFonts.nunito(fontWeight: FontWeight.w900, fontSize: 18, color: const Color(0xFF00695C)),
+              ),
+              const SizedBox(height: 15),
+              _favoritosSalvos.isEmpty
+                  ? const Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Text("Você ainda não salvou frases favoritas.", textAlign: TextAlign.center),
+              )
+                  : Flexible(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _favoritosSalvos.length,
+                  itemBuilder: (context, index) {
+                    final favorito = _favoritosSalvos[index];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                      child: ListTile(
+                        leading: const Icon(Icons.star, color: Colors.amber),
+                        title: Text(
+                          favorito['titulo'].toString().toUpperCase(),
+                          style: GoogleFonts.nunito(fontWeight: FontWeight.bold),
+                        ),
+                        onTap: () {
+                          setState(() {
+                            // Converte os dados salvos de volta para o formato que a lousa entende
+                            fraseAtual = List<Map<String, dynamic>>.from(favorito['cards']);
+                          });
+                          Navigator.pop(context); // Fecha a gaveta
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        );
+      },
     );
   }
 }
