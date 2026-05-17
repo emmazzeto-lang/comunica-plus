@@ -5,7 +5,7 @@ import 'tela_info.dart';
 import 'configuracoes_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'comecar_screen.dart';
-
+import 'criar_screen.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -86,7 +86,12 @@ class HomeScreen extends StatelessWidget {
 
                           _buildMenuButtonImagem(
                               caminhoImagem: 'assets/images/botao_criar.png',
-                              onPressed: () {}
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const CriarScreen()),
+                                );
+                              }
                           ),
                         ],
                       ),

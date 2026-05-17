@@ -4,6 +4,8 @@ import 'home_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   // Força o aplicativo a iniciar sempre deitado
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,

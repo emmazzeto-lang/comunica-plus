@@ -42,6 +42,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_native_splash: ^2.4.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -63,6 +64,15 @@ flutter:
 
   assets:
     - assets/images/
+
+flutter_native_splash:
+  color: "#E0F2F1" # Aquela cor verde-água bem leve que você está usando de padrão
+  image: assets/images/logo_comunica.png # A imagem que vai aparecer no centro da tela
+
+  # Isso aqui garante que funcione perfeitamente nos Androids mais novos:
+  android_12:
+    image: assets/images/logo_comunica.png
+    color: "#E0F2F1"
 
   # To add assets to your application, add an assets section, like this:
   # assets:
